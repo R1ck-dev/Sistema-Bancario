@@ -1,33 +1,38 @@
 # 💰 Sistema Bancário Simples
 
-Este é um sistema bancário simples implementado em Python que permite ao usuário realizar operações básicas como saque, depósito e visualização do extrato. Desenvolvido como método de aprendizado para o bootcamp Suzano - Python Developer (DIO)
+Este é um sistema bancário implementado em Python que permite ao usuário realizar operações básicas como saque, depósito e visualização do extrato. Ele inclui um sistema de controle de limites diários e registro preciso das transações com data e hora.
 
 ## ✨ Funcionalidades
-- 🏧 **Saque**: Permite realizar saques com um limite de R$500,00 por transação e um limite de 3 saques diários.
-- 💵 **Depósito**: Permite adicionar saldo à conta do usuário.
-- 📜 **Visualização de Extrato**: Exibe todas as transações realizadas.
-- 🚪 **Sair**: Encerra o sistema.
+- 🏧 **Saque**: Permite realizar saques com um limite de **R$500,00 por transação** e um máximo de **10 transações diárias**.
+- 💵 **Depósito**: O usuário pode adicionar qualquer valor ao saldo da conta.
+- 📜 **Extrato com Data e Hora**: Todas as transações são registradas com a data e hora exatas, permitindo um histórico detalhado.
+- 🔟 **Limite Diário de Transações**: O sistema permite até **10 transações por dia** (saques e depósitos combinados).
+- ⏳ **Reset Automático dos Limites**: O contador de transações diárias é **automaticamente zerado à meia-noite**.
+- 🚫 **Bloqueio de Transações Após o Limite**: Se o limite diário for atingido, novas operações são bloqueadas e uma mensagem é exibida.
+- 🚪 **Sair**: Opção para encerrar o sistema.
 
 ## ⚙️ Requisitos
 - 🐍 Python 3.x
 
 ## 🚀 Como Executar o Programa
-    1. Certifique-se de ter o Python instalado no seu computador.
-    2. Salve o código em um arquivo com extensão `.py` (por exemplo, `sistema_bancario.py`).
-    3. Execute o script no terminal ou prompt de comando:
+1. Certifique-se de ter o Python instalado em seu computador.
+2. Salve o código em um arquivo `.py` (por exemplo, `sistema_bancario.py`).
+3. Execute o script no terminal:
    ```sh
    python sistema_bancario.py
-   ```
+
 
 ## 📌 Estrutura do Sistema
 O programa é baseado em um loop principal que exibe um menu interativo para o usuário, permitindo que ele escolha entre as opções disponíveis.
 Cada operação tem um menu próprio para guiar o usuário durante a interação.
 
 ### 🔍 Lógica de Funcionamento
-- 💲 O saldo inicial da conta é de R$1000,00.
-- 📝 O extrato é armazenado em uma lista que registra todas as transações realizadas.
-- ❌ O programa impede que o usuário saque um valor maior do que o saldo disponível ou acima do limite por transação.
-- ⏳ Há uma pausa de 2 segundos antes de retornar ao menu principal após cada operação.
+- 💲  Saldo Inicial: A conta começa com um saldo de R$1000,00.
+- 📆 Registro de Transações: Cada saque e depósito é armazenado no extrato com data e hora.
+- ❌ Limite de Saque: O programa impede que o usuário saque um valor maior do que o saldo disponível ou acima do limite por transação.
+- 🔄 Limite Diário: O usuário pode realizar até 10 transações por dia (saques e depósitos somados).
+- ⏳ Renovação Automática do Limite: À meia-noite, o contador de transações é reiniciado automaticamente.
+- 🚫 Bloqueio de Transações Excedentes: Se o usuário atingir o limite diário, novas operações não serão permitidas até o dia seguinte.
 
 ## 🔧 Ainda em Desenvolvimento
 - 🔑 Implementar um sistema de autenticação para o usuário.
