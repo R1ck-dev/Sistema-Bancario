@@ -46,3 +46,93 @@ def extrato_(extrato):
         print('Nenhuma transação realizada até o momento.\n')
         
     return extrato
+
+def criar_usuario(usuarios_dict):
+    nome = str(input("\nNome completo do usuário: "))
+    data_nascimento = str(input("Data de nascimento do usuário [xx/xx/xxxx]: "))
+    data_nascimento = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
+    data_nascimento = data_nascimento.strftime("%d/%m/%Y")
+    cpf = int(input("CPF do usuário: "))
+        
+    if cpf in usuarios_dict:
+        print("CPF já cadastrado!")
+        
+    else:
+        # Coleta informações do endereço
+        endereco = list()
+        endereco.append(str(input("Endereço - logradouro: ")))
+        endereco.append(str(input("Endereço - número: ")))
+        endereco.append(str(input("Endereço - bairro: ")))
+        endereco.append(str(input("Endereço - Cidade/Sigla Estado: ")))
+            
+        usuarios_dict[cpf] = []
+            
+        # Armazena os dados do usuário no dicionário
+        usuarios_dict[cpf].append({
+            "nome": nome,
+            "data de nascimento": data_nascimento,
+            "cpf": cpf,
+            "endereço": endereco
+        })
+            
+        print("\n|Usuário Criado com Sucesso|\n")
+        print(f"Usuários Final: {usuarios_dict}")
+    
+    return usuarios_dict
+
+def criar_conta(usuarios_dict, contas_dict, numero_conta):
+    print("\nEscolha um usuário para criar a conta!")
+
+    for chave in usuarios_dict.keys():
+        print(f'{usuarios_dict[chave][0]["nome"]} --- {usuarios_dict[chave][0]["cpf"]}')
+    usuario_escolhido = int(input())
+        
+    # Verifica se o usuário existe e cria a conta
+    for chave in usuarios_dict.keys():
+        if usuario_escolhido == chave:
+            numero_conta += 1
+            print("Usuário Encontrado")
+            print(f"Criando conta para {usuarios_dict[usuario_escolhido][0]['nome']}")
+            
+            # Adiciona a conta ao dicionário de contas
+            if usuario_escolhido in contas_dict:
+                contas_dict[usuario_escolhido].append(['0001', numero_conta, usuarios_dict[usuario_escolhido][0]['nome']])
+            else:
+                contas_dict[usuario_escolhido] = [['0001', numero_conta, usuarios_dict[usuario_escolhido][0]['nome']]]
+        
+    print("Conta Criada com Sucesso.")
+    print(f"{usuarios_dict[usuario_escolhido][0]['nome']} agora possui {len(contas_dict[usuario_escolhido])} conta(s)")
+    print(f'\n{contas_dict}')
+    
+    return usuarios_dict, contas_dict, numero_conta
+
+def deletar_conta(usuarios_dict):
+    print("\nEscolha qual usuário você deseja apagar.")
+
+    for chave in usuarios_dict.keys():
+        print(f'--> {usuarios_dict[chave][0]["nome"]} | {usuarios_dict[chave][0]["cpf"]}')
+        
+    usuario_escolhido = int(input())
+    del usuarios_dict[usuario_escolhido]
+        
+    print(usuarios_dict)
+    
+    return usuarios_dict
+
+def listar_usuarios(usuarios_dict, contas_dict):
+    print("Escolha qual usuário você deseja ver as contas.")
+
+    for chave in usuarios_dict.keys():
+        print(f'--> {usuarios_dict[chave][0]["nome"]} | {usuarios_dict[chave][0]["cpf"]}')
+        
+    usuario_escolhido = int(input())
+    print(usuarios_dict)
+    if usuario_escolhido in contas_dict:
+        for valor in contas_dict[usuario_escolhido]:
+            print(f"| CPF: {usuario_escolhido}")
+            print(f"| Agência: {valor[0]}")
+            print(f"| Número da Conta: {valor[1]}")
+            print(f"| Usuário: {valor[2]}")
+            print("-" * 30)  
+    
+    return usuarios_dict, contas_dict

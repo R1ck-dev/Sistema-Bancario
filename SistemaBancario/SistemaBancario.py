@@ -1,8 +1,8 @@
 from time import sleep  # Importa a função sleep para pausar a execução por um tempo determinado
 from datetime import datetime, timedelta  # Importa as classes para manipulação de datas e horários
 import pytz  # Biblioteca para manipulação de fusos horários (importada, mas não utilizada)
-from menu import menu, menu_deposito, menu_extrato, menu_saque
-from transacoes import saque, deposito, extrato_
+from menu import menu, menu_deposito, menu_extrato, menu_saque, menu_criar_usuario, menu_criar_conta, menu_deletar_conta, menu_listar_usuarios
+from transacoes import saque, deposito, extrato_, criar_usuario, criar_conta, deletar_conta, listar_usuarios
 
 # Definição de variáveis globais
 saldo = 1000.00  # Saldo inicial da conta
@@ -22,7 +22,8 @@ while True:
         cont_saque_diarios = 0  # Reseta o contador de saques
 
     menu()  # Exibe o menu principal
-    operacao = int(input("Indique a operação desejada: "))  # Solicita a opção do usuário
+    operacao = int(input("\nIndique a operação desejada: "))  # Solicita a opção do usuário
+    print()
     
     # Verifica se a opção informada é válida
     if str(operacao) not in '12345678':
@@ -46,82 +47,23 @@ while True:
     
     # Opção para cadastrar um novo usuário
     elif operacao == 4:
-        nome = str(input("Nome completo do usuário: "))
-        data_nascimento = str(input("Data de nascimento do usuário [xx/xx/xxxx]: "))
-        data_nascimento = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
-        data_nascimento = data_nascimento.strftime("%d/%m/%Y")
-        cpf = int(input("CPF do usuário: "))
+        menu_criar_usuario()
+        usuarios_dict = criar_usuario(usuarios_dict)
         
-        # Coleta informações do endereço
-        endereco = list()
-        endereco.append(str(input("Endereço - logradouro: ")))
-        endereco.append(str(input("Endereço - número: ")))
-        endereco.append(str(input("Endereço - bairro: ")))
-        endereco.append(str(input("Endereço - Cidade/Sigla Estado: ")))
-        
-        # Armazena os dados do usuário no dicionário
-        usuarios_dict[cpf] = {
-            "nome": nome,
-            "data de nascimento": data_nascimento,
-            "cpf": cpf,
-            "endereço": endereco
-        }
-        
-        print(f"Usuários Final: {usuarios_dict}")
-    
     # Opção para criar uma conta bancária para um usuário existente
     elif operacao == 5:
-        print("Escolha um usuário para criar a conta!")
-        for chave in usuarios_dict.keys():
-            print(f'{usuarios_dict[chave]["nome"]} --- {usuarios_dict[chave]["cpf"]}')
+        menu_criar_conta()
+        usuarios_dict, contas_dict, numero_conta = criar_conta(usuarios_dict, contas_dict, numero_conta)
         
-        usuario_escolhido = int(input())
-        
-        # Verifica se o usuário existe e cria a conta
-        for chave in usuarios_dict.keys():
-            if usuario_escolhido == chave:
-                numero_conta += 1
-                print("Usuário Encontrado")
-                print(f"Criando conta para {usuarios_dict[usuario_escolhido]['nome']}")
-                
-                # Adiciona a conta ao dicionário de contas
-                if usuario_escolhido in contas_dict:
-                    contas_dict[usuario_escolhido].append(['0001', numero_conta, usuarios_dict[usuario_escolhido]['nome']])
-                else:
-                    contas_dict[usuario_escolhido] = [['0001', numero_conta, usuarios_dict[usuario_escolhido]['nome']]]
-        
-        print("Conta Criada com Sucesso.")
-        print(f"{usuarios_dict[usuario_escolhido]['nome']} agora possui {len(contas_dict[usuario_escolhido])} conta(s)")
-        print(f'\n{contas_dict}')
-    
     # Opção para excluir um usuário
     elif operacao == 6:
-        print("Escolha qual usuário você deseja apagar.")
-        c = 0
-        for chave in usuarios_dict.keys():
-            print(f'[{c}] {usuarios_dict[chave]["nome"]} --- {usuarios_dict[chave]["cpf"]}')
-            c += 1
-        usuario_escolhido = int(input())
-        del usuarios_dict[usuario_escolhido]
-        
-        print(usuarios_dict)
+        menu_deletar_conta()
+        usuarios_dict = deletar_conta(usuarios_dict)
     
     # Opção para visualizar contas de um usuário específico
     elif operacao == 7:
-        print("Escolha qual usuário você deseja ver as contas.")
-        c = 0
-        for chave in usuarios_dict.keys():
-            print(f'[{c}] {usuarios_dict[chave]["nome"]} --- {usuarios_dict[chave]["cpf"]}')
-            c += 1
-        usuario_escolhido = int(input())
-        
-        if usuario_escolhido in contas_dict:
-            for valor in contas_dict[usuario_escolhido]:
-                print(f"| CPF: {usuario_escolhido}")
-                print(f"| Agência: {valor[0]}")
-                print(f"| Número da Conta: {valor[1]}")
-                print(f"| Usuário: {valor[2]}")
-                print("-" * 30)  
+        menu_listar_usuarios()
+        usuarios_dict, contas_dict = listar_usuarios(usuarios_dict, contas_dict)
     
     # Opção para sair do sistema
     elif operacao == 8:

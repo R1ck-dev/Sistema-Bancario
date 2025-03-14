@@ -41,3 +41,27 @@ def menu_extrato(saldo, cont_saque_diarios):
     print('Sistema Bancário - EXTRATO'.center(tam))
     print('-' * tam)
     print(f'\nSaldo Atual -->  R${saldo:.2f}\n')  # Exibe o saldo atual ao visualizar o extrato
+    
+def menu_criar_usuario():
+    tam = len('Sistema Bancário - CRIAR USUÁRIO') + 4
+    print('-' * tam)
+    print('Sistema Bancário - CRIAR USUÁRIO'.center(tam))
+    print('-' * tam)
+    
+def menu_criar_conta():
+    tam = len('Sistema Bancário - CRIAR CONTA') + 4
+    print('-' * tam)
+    print('Sistema Bancário - CRIAR CONTA'.center(tam))
+    print('-' * tam)
+    
+def menu_deletar_conta():
+    tam = len('Sistema Bancário - DELETAR USUÁRIO') + 4
+    print('-' * tam)
+    print('Sistema Bancário - DELETAR USUÁRIO'.center(tam))
+    print('-' * tam)
+    
+def menu_listar_usuarios():
+    tam = len('Sistema Bancário - LISTAR USUÁRIOS') + 4
+    print('-' * tam)
+    print('Sistema Bancário - LISTAR USUÁRIOS'.center(tam))
+    print('-' * tam)
