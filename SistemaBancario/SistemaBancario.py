@@ -11,45 +11,9 @@ extrato = list()  # Lista para armazenar o extrato das transações
 dia_atual = datetime.now()  # Obtém a data e hora atual
 dia_atual_formatado = dia_atual.strftime("%d/%m/%Y %Hh%M")  # Formata a data para exibição
 data_dia_atual = dia_atual.strftime("%d")  # Captura apenas o dia do mês atual
-# usuarios = list()
-usuarios = [
-    ['Henrique', '11/08/2005', 54994479852, ['Rua Curitiba', '66', 'Celia Mota', 'Barueri/SP São Paulo']]
-    ]
-usuarios_dict = {
-    '12345678900': {
-        "nome": "Henrique",
-        "data de nascimento": "11/08/2005",
-        "cpf": 12345678900,
-        "endereço": ['Rua Curitiba', '66', 'Celia Mota', 'Barueri/SP São Paulo']
-    },
-    '98765432100': {
-        "nome": "Guilherme",
-        "data de nascimento": "20/03/1998",
-        "cpf": 98765432100,
-        "endereço": ['Rua das Palmeiras', '102', 'Centro', 'São Paulo/SP São Paulo']
-    },
-    '11223344556': {
-        "nome": "Giovanna",
-        "data de nascimento": "15/07/2000",
-        "cpf": 11223344556,
-        "endereço": ['Av. Brasil', '45', 'Bela Vista', 'São Paulo/SP São Paulo']
-    },
-    '55667788990': {
-        "nome": "Chappie",
-        "data de nascimento": "03/12/1995",
-        "cpf": 55667788990,
-        "endereço": ['Rua dos Lírios', '38', 'Vila Mariana', 'São Paulo/SP São Paulo']
-    },
-    '66778899001': {
-        "nome": "Melaine",
-        "data de nascimento": "28/02/1992",
-        "cpf": 66778899001,
-        "endereço": ['Rua dos Eucaliptos', '77', 'Jardim das Flores', 'São Paulo/SP São Paulo']
-    }
-}
-contas_dict = {}
-id_conta = 0
-
+usuarios_dict = {}  # Dicionário para armazenar usuários
+contas_dict = {}  # Dicionário para armazenar contas bancárias
+numero_conta = 0  # Contador para o número da conta
 
 # Loop principal do sistema bancário
 while True:
@@ -79,70 +43,88 @@ while True:
     elif operacao == 3:
         menu_extrato(saldo, cont_saque_diarios)  # Exibe o menu de extrato
         extrato = extrato_(extrato)
-
-    # Opção para sair do sistema
-    elif operacao == 8:
-        break  # Encerra o loop e finaliza o programa
     
+    # Opção para cadastrar um novo usuário
     elif operacao == 4:
-        # usuarios_aux = list()
-        # nome = str(input("Nome completo do usuário: "))
-        # usuarios_aux.append(nome)
-        # data_nascimento = str(input("Data de nascimento do usuários [xx/xx/xxxx]: "))
-        # data_nascimento = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
-        # data_nascimento = data_nascimento.strftime("%d/%m/%Y")
-        # usuarios_aux.append(data_nascimento)
-        # cpf = int(input("CPF do usuário: "))
-        # usuarios_aux.append(cpf)
-        # endereço = list()
-        # endereço.append(str(input("Endereço - logradouro: ")))
-        # endereço.append(str(input("Endereço - numero: ")))
-        # endereço.append(str(input("Endereço - bairro: ")))
-        # endereço.append(str(input("Endereço - Cidade/Sigla Estado: ")))
-        # usuarios_aux.append(endereço.copy())
-        # endereço.clear()
-        # usuarios.append(usuarios_aux.copy())
-        # usuarios_aux.clear()
-        
-        # print(f"Usuários Final: {usuarios}")
-        
         nome = str(input("Nome completo do usuário: "))
-        data_nascimento = str(input("Data de nascimento do usuários [xx/xx/xxxx]: "))
+        data_nascimento = str(input("Data de nascimento do usuário [xx/xx/xxxx]: "))
         data_nascimento = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
         data_nascimento = data_nascimento.strftime("%d/%m/%Y")
         cpf = int(input("CPF do usuário: "))
-        endereço = list()
-        endereço.append(str(input("Endereço - logradouro: ")))
-        endereço.append(str(input("Endereço - numero: ")))
-        endereço.append(str(input("Endereço - bairro: ")))
-        endereço.append(str(input("Endereço - Cidade/Sigla Estado: ")))
+        
+        # Coleta informações do endereço
+        endereco = list()
+        endereco.append(str(input("Endereço - logradouro: ")))
+        endereco.append(str(input("Endereço - número: ")))
+        endereco.append(str(input("Endereço - bairro: ")))
+        endereco.append(str(input("Endereço - Cidade/Sigla Estado: ")))
+        
+        # Armazena os dados do usuário no dicionário
         usuarios_dict[cpf] = {
             "nome": nome,
             "data de nascimento": data_nascimento,
             "cpf": cpf,
-            "endereço": endereço
+            "endereço": endereco
         }
         
         print(f"Usuários Final: {usuarios_dict}")
-        
-        
+    
+    # Opção para criar uma conta bancária para um usuário existente
     elif operacao == 5:
-        usuario_escolhido = str(input("CPF do Usuário: "))
-        for cpf_cont in usuarios_dict.keys():
-            if usuario_escolhido == cpf_cont:
-                print("Usuário Encontrado!")
-                print(f"Criando Conta para {usuarios_dict[usuario_escolhido]['nome']}")
-        # print("Deseja Criar Conta Corrente para qual Usuário:")
-        # for id_usuario, dados in usuarios_dict.items():
-        #     print(f"CPF: [{id_usuario}] - Nome: {dados['nome']}")
-        # usuario_escolhido = int(input())
-        # if usuario_escolhido > len(usuarios):
-        #     print("Usuário Inexistente!")
-        #     continue
+        print("Escolha um usuário para criar a conta!")
+        for chave in usuarios_dict.keys():
+            print(f'{usuarios_dict[chave]["nome"]} --- {usuarios_dict[chave]["cpf"]}')
         
+        usuario_escolhido = int(input())
         
-        # contas_dict[usuarios_dict[cpf]]
+        # Verifica se o usuário existe e cria a conta
+        for chave in usuarios_dict.keys():
+            if usuario_escolhido == chave:
+                numero_conta += 1
+                print("Usuário Encontrado")
+                print(f"Criando conta para {usuarios_dict[usuario_escolhido]['nome']}")
+                
+                # Adiciona a conta ao dicionário de contas
+                if usuario_escolhido in contas_dict:
+                    contas_dict[usuario_escolhido].append(['0001', numero_conta, usuarios_dict[usuario_escolhido]['nome']])
+                else:
+                    contas_dict[usuario_escolhido] = [['0001', numero_conta, usuarios_dict[usuario_escolhido]['nome']]]
         
+        print("Conta Criada com Sucesso.")
+        print(f"{usuarios_dict[usuario_escolhido]['nome']} agora possui {len(contas_dict[usuario_escolhido])} conta(s)")
+        print(f'\n{contas_dict}')
+    
+    # Opção para excluir um usuário
+    elif operacao == 6:
+        print("Escolha qual usuário você deseja apagar.")
+        c = 0
+        for chave in usuarios_dict.keys():
+            print(f'[{c}] {usuarios_dict[chave]["nome"]} --- {usuarios_dict[chave]["cpf"]}')
+            c += 1
+        usuario_escolhido = int(input())
+        del usuarios_dict[usuario_escolhido]
         
-
+        print(usuarios_dict)
+    
+    # Opção para visualizar contas de um usuário específico
+    elif operacao == 7:
+        print("Escolha qual usuário você deseja ver as contas.")
+        c = 0
+        for chave in usuarios_dict.keys():
+            print(f'[{c}] {usuarios_dict[chave]["nome"]} --- {usuarios_dict[chave]["cpf"]}')
+            c += 1
+        usuario_escolhido = int(input())
+        
+        if usuario_escolhido in contas_dict:
+            for valor in contas_dict[usuario_escolhido]:
+                print(f"| CPF: {usuario_escolhido}")
+                print(f"| Agência: {valor[0]}")
+                print(f"| Número da Conta: {valor[1]}")
+                print(f"| Usuário: {valor[2]}")
+                print("-" * 30)  
+    
+    # Opção para sair do sistema
+    elif operacao == 8:
+        break  # Encerra o loop e finaliza o programa
+    
     sleep(2)  # Aguarda 2 segundos antes de retornar ao menu
