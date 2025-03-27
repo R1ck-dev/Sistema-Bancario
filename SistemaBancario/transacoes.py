@@ -1,41 +1,50 @@
 from datetime import datetime, timedelta  # Importa as classes para manipulação de datas e horários
-import pytz  # Biblioteca para manipulação de fusos horários (importada, mas não utilizada)
+# import pytz  # Biblioteca para manipulação de fusos horários (importada, mas não utilizada)
 
 def saque(*, saldo, cont_saque_diarios, extrato):
-    if cont_saque_diarios < 10:  # Verifica se o usuário ainda tem saques disponíveis no dia
-        valor_saque = float(input('Indique o valor de saque: '))  # Solicita o valor do saque
-        if valor_saque <= 500:  # Verifica se o valor do saque não ultrapassa o limite de R$500,00
-            if valor_saque <= saldo:  # Verifica se há saldo suficiente para o saque
-                saldo -= valor_saque  # Deduz o valor do saque do saldo
-                print('Operação realizada com sucesso!')
-                print(f'Seu saldo atual é de R${saldo:.2f}')
-                # Registra o saque no extrato com data e hora
-                extrato.append(f'Saque -> R${valor_saque:.2f} [{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}]')
-                cont_saque_diarios += 1  # Incrementa o contador de saques diários
-            else:
-                print('Valor do saque excede o seu saldo atual.')
-                print(f'Saldo Atual = R${saldo:.2f}')
-        else:
-            print('Valor de saque é maior do que o limite de R$500,00')
-    else:
-        print('Quantidade máxima de transações diárias excedida')
-    
-    return saldo, cont_saque_diarios, extrato
-    
+        while True:
+            try:
+                if cont_saque_diarios < 10:  # Verifica se o usuário ainda tem saques disponíveis no dia
+                    valor_saque = float(input('Indique o valor de saque: '))  # Solicita o valor do saque
+                    if valor_saque <= 500:  # Verifica se o valor do saque não ultrapassa o limite de R$500,00
+                        if valor_saque <= saldo:  # Verifica se há saldo suficiente para o saque
+                            saldo -= valor_saque  # Deduz o valor do saque do saldo
+                            print('Operação realizada com sucesso!')
+                            print(f'Seu saldo atual é de R${saldo:.2f}')
+                            # Registra o saque no extrato com data e hora
+                            extrato.append(f'Saque -> R${valor_saque:.2f} [{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}]')
+                            cont_saque_diarios += 1  # Incrementa o contador de saques diários
+                        else:
+                            print('Valor do saque excede o seu saldo atual.')
+                            print(f'Saldo Atual = R${saldo:.2f}')
+                    else:
+                        print('Valor de saque é maior do que o limite de R$500,00')
+                else:
+                    print('Quantidade máxima de transações diárias excedida')
+                
+                return saldo, cont_saque_diarios, extrato
+            except ValueError:
+                print("Insira um valor numérico!")
+            
 
 def deposito(saldo, cont_saque_diarios, extrato, /):
-    if cont_saque_diarios < 10:  # Verifica se o usuário ainda pode realizar transações
-        valor_deposito = float(input('Indique o valor de depósito: '))  # Solicita o valor do depósito
-        saldo += valor_deposito  # Adiciona o valor depositado ao saldo
-        print('Operação realizada com sucesso!')
-        cont_saque_diarios += 1  # Incrementa o contador de transações diárias
-        print(f'Seu saldo atual é de R${saldo:.2f}')
-        # Registra o depósito no extrato com data e hora
-        extrato.append(f'Depósito -> R${valor_deposito:.2f} [{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}]')
-    else:
-        print('Quantidade máxima de transações diárias excedida')
-        
-    return saldo, cont_saque_diarios, extrato
+    while True:
+        try:
+            if cont_saque_diarios < 10:  # Verifica se o usuário ainda pode realizar transações
+                valor_deposito = float(input('Indique o valor de depósito: '))  # Solicita o valor do depósito
+                saldo += valor_deposito  # Adiciona o valor depositado ao saldo
+                print('Operação realizada com sucesso!')
+                cont_saque_diarios += 1  # Incrementa o contador de transações diárias
+                print(f'Seu saldo atual é de R${saldo:.2f}')
+                # Registra o depósito no extrato com data e hora
+                extrato.append(f'Depósito -> R${valor_deposito:.2f} [{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}]')
+            else:
+                print('Quantidade máxima de transações diárias excedida')
+                
+            return saldo, cont_saque_diarios, extrato
+            break
+        except ValueError:
+            print("Insira um valor numérico!")
 
 
 def extrato_(extrato):
@@ -49,11 +58,20 @@ def extrato_(extrato):
 
 def criar_usuario(usuarios_dict):
     nome = str(input("\nNome completo do usuário: "))
-    data_nascimento = str(input("Data de nascimento do usuário [xx/xx/xxxx]: "))
-    data_nascimento = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
-    data_nascimento = data_nascimento.strftime("%d/%m/%Y")
-    cpf = int(input("CPF do usuário: "))
-        
+    while True:
+        try:
+            data_nascimento = str(input("Data de nascimento do usuário [xx/xx/xxxx]: "))
+            data_nascimento = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
+            data_nascimento = data_nascimento.strftime("%d/%m/%Y")
+            break
+        except ValueError:
+            print("Insira a data no formato 'xx/xx/xxxx'!")
+    while True:
+        try:
+            cpf = int(input("CPF do usuário [Apenas Números]: "))
+            break
+        except ValueError:
+            print("Insira apenas os números do CPF!")        
     if cpf in usuarios_dict:
         print("CPF já cadastrado!")
         
@@ -81,30 +99,37 @@ def criar_usuario(usuarios_dict):
     return usuarios_dict
 
 def criar_conta(usuarios_dict, contas_dict, numero_conta):
-    print("\nEscolha um usuário para criar a conta!")
+    while True:
+        try:
+            print("\nEscolha um usuário para criar a conta!")
 
-    for chave in usuarios_dict.keys():
-        print(f'{usuarios_dict[chave][0]["nome"]} --- {usuarios_dict[chave][0]["cpf"]}')
-    usuario_escolhido = int(input())
-        
-    # Verifica se o usuário existe e cria a conta
-    for chave in usuarios_dict.keys():
-        if usuario_escolhido == chave:
-            numero_conta += 1
-            print("Usuário Encontrado")
-            print(f"Criando conta para {usuarios_dict[usuario_escolhido][0]['nome']}")
+            for chave in usuarios_dict.keys():
+                print(f'{usuarios_dict[chave][0]["nome"]} --- {usuarios_dict[chave][0]["cpf"]}')
+            usuario_escolhido = int(input())
+                
+            # Verifica se o usuário existe e cria a conta
+            for chave in usuarios_dict.keys():
+                if usuario_escolhido == chave:
+                    numero_conta += 1
+                    print("Usuário Encontrado")
+                    print(f"Criando conta para {usuarios_dict[usuario_escolhido][0]['nome']}")
+                    
+                    # Adiciona a conta ao dicionário de contas
+                    if usuario_escolhido in contas_dict:
+                        contas_dict[usuario_escolhido].append(['0001', numero_conta, usuarios_dict[usuario_escolhido][0]['nome']])
+                    else:
+                        contas_dict[usuario_escolhido] = [['0001', numero_conta, usuarios_dict[usuario_escolhido][0]['nome']]]
+                else:
+                    raise KeyError
+            print("Conta Criada com Sucesso.")
+            print(f"{usuarios_dict[usuario_escolhido][0]['nome']} agora possui {len(contas_dict[usuario_escolhido])} conta(s)")
+            print(f'\n{contas_dict}')
             
-            # Adiciona a conta ao dicionário de contas
-            if usuario_escolhido in contas_dict:
-                contas_dict[usuario_escolhido].append(['0001', numero_conta, usuarios_dict[usuario_escolhido][0]['nome']])
-            else:
-                contas_dict[usuario_escolhido] = [['0001', numero_conta, usuarios_dict[usuario_escolhido][0]['nome']]]
-        
-    print("Conta Criada com Sucesso.")
-    print(f"{usuarios_dict[usuario_escolhido][0]['nome']} agora possui {len(contas_dict[usuario_escolhido])} conta(s)")
-    print(f'\n{contas_dict}')
-    
-    return usuarios_dict, contas_dict, numero_conta
+            return usuarios_dict, contas_dict, numero_conta
+        except ValueError:
+            print("Insira um CPF válido!")
+        except KeyError:
+            print("Insira um CPF válido!")
 
 def deletar_conta(usuarios_dict):
     print("\nEscolha qual usuário você deseja apagar.")

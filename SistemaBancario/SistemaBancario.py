@@ -1,6 +1,6 @@
 from time import sleep  # Importa a função sleep para pausar a execução por um tempo determinado
 from datetime import datetime, timedelta  # Importa as classes para manipulação de datas e horários
-import pytz  # Biblioteca para manipulação de fusos horários (importada, mas não utilizada)
+#import pytz  # Biblioteca para manipulação de fusos horários (importada, mas não utilizada)
 from menu import menu, menu_deposito, menu_extrato, menu_saque, menu_criar_usuario, menu_criar_conta, menu_deletar_conta, menu_listar_usuarios
 from transacoes import saque, deposito, extrato_, criar_usuario, criar_conta, deletar_conta, listar_usuarios
 
@@ -14,6 +14,10 @@ data_dia_atual = dia_atual.strftime("%d")  # Captura apenas o dia do mês atual
 usuarios_dict = {}  # Dicionário para armazenar usuários
 contas_dict = {}  # Dicionário para armazenar contas bancárias
 numero_conta = 0  # Contador para o número da conta
+
+# async def v():
+#     while(0xFF != ord('q')):
+#         pass
 
 # Loop principal do sistema bancário
 while True:
@@ -29,6 +33,13 @@ while True:
     if str(operacao) not in '12345678':
         print('ERRO! Opção Inválida')
         continue
+
+    # n = [(1,lambda: menu_saque(saldo, cont_saque_diarios), lambda: saque(saldo=saldo, cont_saque_diarios=cont_saque_diarios, extrato=extrato)),
+    #     ]
+    
+    # for conf, fun_ex, fun_con in n:
+    #     if operacao == conf:
+    #         fun_ex()
 
     # Opção de saque
     elif operacao == 1:
@@ -69,4 +80,8 @@ while True:
     elif operacao == 8:
         break  # Encerra o loop e finaliza o programa
     
-    sleep(2)  # Aguarda 2 segundos antes de retornar ao menu
+    # await v()
+    # await if 0xFF == ord('q'):
+    #     continue
+    # sleep(2)  # Aguarda 2 segundos antes de retornar ao menu
+
